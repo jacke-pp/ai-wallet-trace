@@ -39,7 +39,7 @@ by coin:
 Node.js 18+.
 
 ```bash
-npm install -g ai-wallet-trace
+npm install -g github:jacke-pp/ai-wallet-trace
 aitrace who czheyi.ai
 aitrace pnl czheyi.ai
 ```

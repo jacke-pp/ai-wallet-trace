@@ -32,7 +32,7 @@ realized $8,760 on $14,391 cost (+60.88%), 43/61 sells in profit
 需要 Node.js 18 以上。
 
 ```bash
-npm install -g ai-wallet-trace
+npm install -g github:jacke-pp/ai-wallet-trace
 aitrace who czheyi.ai
 aitrace pnl czheyi.ai
 ```
