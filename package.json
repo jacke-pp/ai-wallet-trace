@@ -1,0 +1,43 @@
+{
+  "name": "ai-wallet-trace",
+  "version": "0.1.0",
+  "description": "Who is behind a Binance Agent ID (.ai) wallet on BSC, and do they make money: tied wallets, first funder, realized PnL. Zero dependencies.",
+  "type": "module",
+  "bin": {
+    "aitrace": "bin/aitrace.mjs"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "AGENTS.md",
+    "README.md",
+    "README_zh.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "bsc",
+    "bnb",
+    "binance",
+    "agent-id",
+    "onchain",
+    "wallet",
+    "pnl",
+    "smart-money",
+    "ai-agent"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacke-pp/ai-wallet-trace.git"
+  },
+  "homepage": "https://github.com/jacke-pp/ai-wallet-trace#readme",
+  "bugs": {
+    "url": "https://github.com/jacke-pp/ai-wallet-trace/issues"
+  }
+}
