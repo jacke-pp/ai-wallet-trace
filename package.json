@@ -36,7 +36,7 @@
     "type": "git",
     "url": "git+https://github.com/jacke-pp/ai-wallet-trace.git"
   },
-  "homepage": "https://github.com/jacke-pp/ai-wallet-trace#readme",
+  "homepage": "https://www.npmjs.com/package/ai-wallet-trace",
   "bugs": {
     "url": "https://github.com/jacke-pp/ai-wallet-trace/issues"
   }

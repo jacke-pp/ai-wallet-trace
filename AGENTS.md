@@ -9,7 +9,7 @@ Reply to the user in their language. Keep it short: who it is, how many wallets,
 ## Setup (once)
 
 ```bash
-npm install -g github:jacke-pp/ai-wallet-trace
+npm install -g ai-wallet-trace
 aitrace doctor
 ```
 
