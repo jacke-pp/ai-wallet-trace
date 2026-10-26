@@ -1,16 +1,15 @@
 # ai-wallet-trace
 
-Who is behind a Binance Agent ID (.ai) wallet, and do they actually make money?
+这个 .ai 钱包背后是谁？他到底赚没赚钱？
 
-Binance gave AI wallets an on-chain identity on BSC, and more than 99,000 `.ai` names were claimed in the first five
-days. Launchpads (Four.meme, Flap, GANG) immediately opened coins only these wallets can buy. A `.ai` wallet is
-usually a side wallet, though: the money comes from the owner's main wallet, and profits go back there. Looking at
-the `.ai` wallet alone misses most of the story.
+币安在 BSC 上给 AI 钱包发了链上身份（Agent ID），前 5 天就领出去 9.9 万多个 `.ai` 名字，Four.meme、Flap、GANG
+几个发射台马上开了只让这些钱包买的新币。但 `.ai` 钱包多半是小号：钱从主钱包打进来，赚了再打回去卖。只看 `.ai`
+钱包本身，大部分故事都看不到。
 
-`aitrace` follows the money back: it finds the person's other wallets, tells you why each one is tied, and adds up
-realized profit across all of them, trade by trade. Read-only. No wallet, no key, no login.
+`aitrace` 顺着钱往回扒：找出这个人的其他钱包，每个都说清凭什么算同一个人，再把所有钱包的已实现盈亏一笔笔加起来。
+只读，不要钱包、不要私钥、不用登录。
 
-[中文说明](https://github.com/jacke-pp/ai-wallet-trace/blob/main/README_zh.md)
+[English](https://github.com/jacke-pp/ai-wallet-trace/blob/main/README.md)
 
 ```
 $ aitrace who acclo.ai
@@ -22,21 +21,15 @@ one person, 6 wallets (5 .ai):
   [.ai] acclo.ai  0x96a7…9147        the wallet you asked about
         0x6297…d690                  paid its first BNB
   [.ai] exeo.ai  0xc26e…956c         0x6297cb… sent it $1487 (incl. plain BNB)
-  [.ai] zed099.ai  0x48dc…f224       0x6297cb… sent it $1487 (incl. plain BNB)
   ...
 
 $ aitrace pnl acclo.ai
-
-acclo.ai  (one person, 6 wallets)
 realized $8,760 on $14,391 cost (+60.88%), 43/61 sells in profit
-by coin:
-  GANG      $7,515  on $1,178
-  ...
 ```
 
-## Start
+## 开始
 
-Node.js 18+.
+需要 Node.js 18 以上。
 
 ```bash
 npm install -g ai-wallet-trace
@@ -44,56 +37,51 @@ aitrace who czheyi.ai
 aitrace pnl czheyi.ai
 ```
 
-Or tell your AI (Claude, Codex, anything with a shell): "run `aitrace agents`, read it, then tell me who is behind
-czheyi.ai".
+也可以直接跟你的 AI（Claude、Codex，任何能跑命令的）说：“运行 `aitrace agents`，读完告诉我 czheyi.ai 背后是谁”。
 
-## Two ways to run
+## 两种用法
 
-**No setup (default).** `aitrace` asks [agentidlive.ai](https://agentidlive.ai), which scans every `.ai` wallet on
-BSC and keeps a live board of the best traders, grouped by person. Works for `.ai` wallets only.
+**不用配置（默认）**：`aitrace` 去问 [agentidlive.ai](https://agentidlive.ai)。这个网站扫着 BSC 上所有 `.ai`
+钱包，按人合并后排了实时高手榜。只能查 `.ai` 钱包。
 
-**Your own node.** Everything is read from the chain on your machine, for any address:
+**用自己的节点**：所有数据在你自己电脑上从链上读，任何地址都能查：
 
 ```bash
-aitrace config set rpc https://your-bsc-archive-node/...
+aitrace config set rpc https://你的BSC归档节点/...
 aitrace doctor
 ```
 
-It needs a BSC **archive** node that can read old logs and old balances. Free public endpoints can't (they cap log
-ranges at a few dozen blocks or need a key); a free key from NodeReal, Chainstack, QuickNode or Ankr usually works.
-A first run takes 1–3 minutes per person; everything read is cached in `~/.ai-wallet-trace`, so later runs only read
-new blocks.
+要 BSC **归档节点**，能查历史日志和历史余额。免费公共节点不行（日志只给查几十个块，或者要 key）；NodeReal、
+Chainstack、QuickNode、Ankr 的免费 key 一般可以。第一次查一个人要 1–3 分钟，读过的都缓存在 `~/.ai-wallet-trace`，
+以后只读新块。
 
-## How wallets are tied
+## 怎么判断是同一个人
 
-Another wallet counts as the same person when any one of these is true:
+满足任意一条，就算同一个人的钱包：
 
-- it paid the `.ai` wallet its **first BNB**
-- **real money** moved between them, $20+ either way (stablecoins, WBNB, and in local mode plain BNB too)
-- the `.ai` wallet sent it **2+ transfers of coins it really bought**. Address-poisoning spam uses fake coins the
-  wallet never bought, so it can't tie anyone.
+- 给这个 `.ai` 钱包打了**第一笔 BNB**
+- 两边之间有**真金白银**往来，任一方向 $20 以上（稳定币、WBNB；用自己节点时，直接转的 BNB 也算）
+- `.ai` 钱包给它转过 **2 次以上自己真买过的币**。投毒骗局用的是钱包从没买过的假币，所以绑不上任何人。
 
-Never tied: contracts (DEXes, launchpads, bridges), exchanges and very busy addresses, burn addresses, bots (5000+
-trades) and wallets shared by more than 6 `.ai` wallets. EIP-7702 smart wallets are people and count. Other `.ai`
-wallets that share the main wallet join the person.
+不算的：合约（DEX、发射台、跨链桥）、交易所和特别忙的地址、销毁地址、机器人（5000 笔以上）、被 6 个以上 `.ai`
+钱包共用的地址。EIP-7702 智能钱包是人，算。跟同一个主钱包有关系的其他 `.ai` 钱包，也并进这个人。
 
-## How profit is counted
+## 盈亏怎么算
 
-Realized profit only, average cost, USD at the time of each trade (BNB priced by the minute from Binance's public
-market data). A coin that arrived free has no cost, so selling it is not profit. Trades paid in plain BNB leave no
-token log: `aitrace` reads the wallet's BNB change over that block and counts the trade only when nothing else moved
-its BNB in that block and the amount shows up in the trade's own receipt. Anything it could not price is listed with
-the reason in `--json`, never guessed.
+只算已实现盈亏，平均成本法，按每笔成交当时的美元价（BNB 价格取币安公开行情的分钟线）。白拿的币（空投、别人转来的）
+没有成本，卖掉不算赚钱。直接用 BNB 付的交易没有代币日志：`aitrace` 读这个钱包在那个块里的 BNB 变化，只有那个块里
+没有别的东西动过它的 BNB、而且这个金额能在这笔交易自己的回执里对上，才算这笔交易。算不了价的都在 `--json`
+里写明原因，不靠猜。
 
-## Commands
+## 命令
 
 ```
-aitrace who <name.ai | 0x…>     the person: their other wallets, and why each one is tied
-aitrace pnl <name.ai | 0x…>     realized profit, coin by coin and trade by trade (--solo: one wallet)
-aitrace doctor                  check the connection
-aitrace agents                  instructions for AI assistants
-aitrace config set rpc <url>    your own archive node (also rps, window)
-  --json  --site  --since <block>  --trades <n>  --bnb-cap <n>
+aitrace who <名字.ai | 0x…>     这个人：其他钱包，每个凭什么算
+aitrace pnl <名字.ai | 0x…>     已实现盈亏，按币、按笔（--solo：只算这一个钱包）
+aitrace doctor                  检查连接
+aitrace agents                  给 AI 看的说明
+aitrace config set rpc <url>    自己的归档节点（还有 rps、window）
+  --json  --site  --since <块号>  --trades <n>  --bnb-cap <n>
 ```
 
-Zero dependencies. MIT licensed. Reads public data only; this is research, not financial advice.
+零依赖，MIT 许可。只读公开数据；这是研究工具，不是投资建议。
