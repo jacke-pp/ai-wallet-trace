@@ -10,7 +10,7 @@ the `.ai` wallet alone misses most of the story.
 `aitrace` follows the money back: it finds the person's other wallets, tells you why each one is tied, and adds up
 realized profit across all of them, trade by trade. Read-only. No wallet, no key, no login.
 
-[中文说明](https://github.com/jacke-pp/ai-wallet-trace/blob/main/README_zh.md)
+[中文说明](https://github.com/jacke-pp/ai-wallet-trace/blob/main/README.md)
 
 ```
 $ aitrace who acclo.ai
